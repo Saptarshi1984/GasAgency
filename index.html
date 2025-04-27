@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gas Agency System</title>
+</head>
+<body>
+
+    <nav id="navBar">
+        <a id="brandName" class="navLink" href="#">G.A.S</a>
+        
+    </nav>
+   <div id="heroContainer">
+    <div id="heroPage">
+        <img src="https://res.cloudinary.com/dytxyfzyd/image/upload/v1745654159/pexels-soumithsoman-5691944_unxrua.jpg" alt="heroImage">
+        <div id="heroText">
+        <h1>This is the Title of the Page</h1>
+        <p id="heroText">Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
+    </div>
+    </div>
+
+    <div id="authForm">
+        <h2>Login to your account</h2>
+        <input id="userEmail" type="text" placeholder="Enter your email..." required>
+        <input id="userPassword" type="password" placeholder="password" required>
+        <button id="btnLogin" type="submit">Login</button>
+        <hr>
+        <h4>Other Login options</h4>
+        <button type="submit"><i class="fa-brands fa-google"></i>Login with Google</button>
+        <button type="submit"><i class="fa-brands fa-facebook-f"></i>Login with Facebook</button>
+        <button type="submit"><i class="fa-brands fa-x-twitter"></i>Login with X</button>
+
+        <a href="#">Forgot Password?</a>
+        <h4>Not Registered? <a id="btnSignup" href="#" onclick="signUp()" >Sign Up</a> </h4>
+        <button type="button" onclick="adminLogin()">Admin Login</button>
+
+    </div>
+
+</div>
+ 
+<script type="module" src="./src/main.js"></script>
+<script src="src/functions/script.js"></script>
+<script src="https://kit.fontawesome.com/eac29af5b4.js" crossorigin="anonymous"></script>
+</body>
+</html>
