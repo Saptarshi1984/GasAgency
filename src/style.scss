@@ -42,7 +42,7 @@ body{
   justify-content: center;
   align-items: center;
 }
-#authForm {
+#signInForm, #signUpForm, #adminLogin{
   padding: 2rem 0;
   min-width: 15%;
   height: auto;
@@ -91,4 +91,3 @@ body{
       width: 80%;
   }
 }
-

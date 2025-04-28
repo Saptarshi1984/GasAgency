@@ -1,41 +1,71 @@
 import './style.scss';
-
-// Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
+import { getAuth, 
+         signInWithEmailAndPassword, 
+         createUserWithEmailAndPassword } from "firebase/auth";
+
 
 // Your web app's Firebase configuration
+
 const firebaseConfig = {
-  apiKey: "AIzaSyCX34KqnU1HLeOkuvc4TqBIujhpb817GSM",
-  authDomain: "first-project-fd65f.firebaseapp.com",
-  projectId: "first-project-fd65f",
-  storageBucket: "first-project-fd65f.firebasestorage.app",
-  messagingSenderId: "605414873826",
-  appId: "1:605414873826:web:81a6ede860b5ea98aedcbb"
+  apiKey: "AIzaSyC3UhFNEGeyMNE5zsb4e4Y-TGuJxy8ZEfw",
+  authDomain: "gassys-5b3df.firebaseapp.com",
+  projectId: "gassys-5b3df",
+  storageBucket: "gassys-5b3df.firebasestorage.app",
+  messagingSenderId: "658508671421",
+  appId: "1:658508671421:web:06a05d2d53257181c64ad4"
 };
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
 
-const auth = getAuth(app);
+const auth = getAuth();
 
-const userLogin = () => {
-    document.getElementById("btnLogin").addEventListener('click', () => {
+
+  const emailId = document.getElementById("userEmail");
+  const passwordInput = document.getElementById("userPassword");
+  const loginBtn = document.getElementById("btnLogin");
+
+    loginBtn.addEventListener('click', () => {
+      const email = emailId.value;
+      const password = passwordInput.value;  
+      
+      signInWithEmailAndPassword(auth, email, password)
+      .then((userCredential) => {
+        const user = userCredential.user;
+        /* alert("You are in login"); */
+
+        window.location.href = '/dashboard.html';
+      })
+      .catch((error) => {
+        console.error(error);
+        alert("you are in login error");
+
+      })
         
-    })
+    });
+    
+    const createAccount = document.getElementById("btnCreate");
+    const emailNew = document.getElementById("newEmail");
+    const passwordNew = document.getElementById("newPassword");
 
-}
+      createAccount.addEventListener('click', () => {
+      
+      const email = emailNew.value;
+      const password = passwordNew.value; 
+      createUserWithEmailAndPassword(auth, email, password)
+      .then((userCredential) => {
+    // Signed up 
+    const user = userCredential.user;
+    alert("Account Created.");
+  })
+  .catch((error) => {
+    const errorCode = error.code;
+    const errorMessage = error.message;
+    // ..
+  });
 
-const userRegistration = () => {
-
-}
-
-const adminLogin = () => {
-
-}
-
-
+})
 
 
 
