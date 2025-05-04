@@ -6,11 +6,12 @@
     <title>Gas Agency System</title>
 </head>
 <body>
-
+  <div id="navContainer">
     <nav id="navBar">
-        <a id="brandName" class="navLink" href="#">G.A.S</a>
+        <a class="logo" href="#">G.A.S</a>
         
     </nav>
+    </div>
    <div id="heroContainer">
     <div id="heroPage">
     <img src="https://res.cloudinary.com/dytxyfzyd/image/upload/v1745654159/pexels-soumithsoman-5691944_unxrua.jpg" alt="heroImage">
@@ -41,9 +42,10 @@
         <h2>Create an Account</h2>
         <input id="newName" type="text" placeholder="Enter your name..." required>
         <input id="newEmail" type="text" placeholder="Enter your email..." required>
-        <input id="newPassword" type="password" placeholder="Enter Password" required>
-        <input id="confirmPassword" type="password" placeholder="Re-enter Password" required>
+        <input id="newPassword" type="password" placeholder="Enter Password" required >
+    
         <button id="btnCreate" type="submit">Create Account</button>
+        <p id="status"></p>
         <hr>
         <h4>Or Register with</h4>
         <button type="submit"><i class="fa-brands fa-google"></i>Login with Google</button>
