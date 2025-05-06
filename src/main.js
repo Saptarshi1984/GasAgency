@@ -1,6 +1,9 @@
 import './style.scss';
 import {auth} from './firebase.js';
+import {doc, setDoc, getFirestore} from "firebase/firestore";
 import {signInWithEmailAndPassword, createUserWithEmailAndPassword} from "firebase/auth";
+
+const db = getFirestore();
 
 
 const emailId = document.getElementById("userEmail");
@@ -50,7 +53,7 @@ const statusMsg = document.getElementById('status');
 
       const docRef = doc(db, "users", userCredential.user.uid);
       setDoc(docRef, {
-        name: newName.value,
+        name:newName.value,
         email:emailNew.value
       }); 
           /* alert("Account Created."); */

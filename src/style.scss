@@ -20,6 +20,16 @@
   display: flex;
   flex-direction: column;
 }
+@mixin btnPrimary {  
+  padding: 0.4rem;
+  background:var(--background-dark);
+  color: aliceblue;
+  font-family: var(--navLink-font);
+  letter-spacing: 1px;
+  border: solid 2px var(--background-light);
+  border-radius: 10px;
+  cursor: pointer;
+}
 
 *{
   margin: 0;
@@ -27,12 +37,17 @@
 }
 h1,h2,h3,h4,h5,h6{
   font-family: var(--title-font);
+  color: aliceblue;
 }
 a{
   text-decoration: none;
 }
 body{
   overflow-y: hidden;
+}
+.active{
+  background: var(--background-light);
+  border-radius: 18px;
 }
 .logo{
   font-family: var(--brand-font);
@@ -52,12 +67,14 @@ body{
   padding: 0.8rem;
   margin-left: 1rem;
   letter-spacing: 1px;
+
+  &:hover{    
+    background: var(--background-light);
+    color: var(--brand-color);
+    border-bottom: solid 1px var(--brand-color);
+  }
 }
-.navLink:hover{
-  background: var(--background-light);
-  color: var(--brand-color);
-  border-bottom: solid 1px var(--brand-color);
-}
+
 #navContainer{
   background: var(--background-dark);
   border-bottom: solid 1px rgb(65, 44, 44);
@@ -167,14 +184,15 @@ body{
     border-radius: 50%;
     object-fit: contain;
   }
+
   button{
+    @include btnPrimary;
     margin: auto;
-    width: 20%;
-    padding: 0.4rem;
-    background:var(--background-dark);
-    color: aliceblue;
-    border: var(--background-dark);
-    font-family: var(--navLink-font);
+    width: 25%;
+
+    &:hover{
+      background: var(--background-light);
+    }
   }
   h4{
     font-family: var(--navLink-font);
@@ -198,5 +216,43 @@ body{
   }
   a:hover{
     color:var(--brand-color);
+  }
+}
+#dash{
+  width: 80%;
+  display: flex;
+}
+#profileSec{
+  @include flex-col;
+  width: 40%;
+  margin:10rem auto;
+  form {
+    @include flex-col;
+    gap: 1rem;
+
+    input {
+      padding: 0.4rem;
+      width: 100%;
+    }
+    button{
+      padding: 0.4rem;
+      width: 25%;
+      cursor: pointer;
+    }
+  }
+}
+#formBtn{
+  display: flex;
+  justify-content:center;
+  gap: 1rem;
+  width: 50%;
+  margin: auto;
+}
+#modifyBtn, #saveBtn {
+  @include btnPrimary;
+  width: 10%;
+  &:hover{
+    background: var(--background-light);
+    border: solid 2px var(--background-dark);
   }
 }

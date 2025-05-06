@@ -14,7 +14,7 @@
             <a class="navLink" href="#">Services</a>
             <a class="navLink" href="#">About Us</a>
             <a class="navLink" href="#">Contact Us</a>
-            <a class="navLink" href="#">username</a>
+            <a id="pName" class="navLink" href="#"></a>
             <a id="logout" class="navLink" href="#">Logout</a>
         </div>        
     </nav>
@@ -24,17 +24,44 @@
      <div id="user-info">
         <img src="" alt="profile-img" >
         <button type="button">Upload</button>
-        <h4>Name:</h4>
-        <h4>Email:</h4>
+        <h4 id="user-name">Name:</h4>
+        <h4 id="user-email">Email:</h4>
     </div>
     <div id="dashLinkWrap">
-        <a href="" class="dashLink">Dashboard</a>
-        <a href="" class="dashLink">Profile</a>
-        <a href="" class="dashLink">Bookings</a>
-        <a href="" class="dashLink">Payment</a>
+        <a id="dashboardTab" href="" class="dashLink active">Dashboard</a>
+        <a id="profileTab" href="" class="dashLink">Profile</a>
+        <a id="bookingsTab" href="" class="dashLink">Bookings</a>
+        <a id="paymentTab" href="" class="dashLink">Payment</a>
     </div>
     </div>
     <div id="dash">
+
+        <div id="dashboardSec">
+            <h1>Your Dashboard</h1>
+        </div>
+
+        <div id="profileSec" style="display: none;">
+            <h1>Your Profile</h1>
+            <form action="submit">
+                <input id="inputName" type="text" placeholder="Name" disabled>
+                <input id="inputEmail" type="text" placeholder="Email" disabled>
+                <input id="inputAadhar" type="text" placeholder="Your Aadhar Number" disabled>
+                <input id="inputMobile" type="number" placeholder="Enter Aadhar Linked Mobile Number." disabled>
+                <input id="inputAddress" type="text" placeholder="Your complete Postal Address." disabled>
+                <div id="formBtn">
+                    <button id="modifyBtn" type="button">Modify</button>    
+                    <button id="saveBtn" type="submit" disabled>Save</button>                
+                </div>
+            </form>
+        </div>
+
+        <div id="bookingSec" style="display: none;">
+            <h1>Your Bookings</h1>
+        </div>
+
+        <div id="paymentSec" style="display: none;">
+            <h1>Your Payments</h1>
+        </div>
 
     </div>
 
