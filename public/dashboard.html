@@ -20,6 +20,7 @@
     </nav>
     </div>
    <div id="dashContainer">
+
     <div id="left-panel">
      <div id="user-info">
         <img src="" alt="profile-img" >
@@ -34,19 +35,53 @@
         <a id="paymentTab" href="" class="dashLink">Payment</a>
     </div>
     </div>
+
     <div id="dash">
 
         <div id="dashboardSec">
-            <h1>Your Dashboard</h1>
+            <h1>Your Dashboard</h1>            
+               <div id="request">
+                  <a href="">
+                    <img src="https://res.cloudinary.com/dytxyfzyd/image/upload/v1746626948/ChatGPT_Image_May_7_2025_07_34_53_PM_vsfcxy.png" alt="">
+                    <h3>Request Refill</h3>
+                  </a>
+                </div>
+                <hr>
+                <div id="refill" style="display: none;">
+                    
+                    <form id="refillOrder" action="">
+                        
+                        <label for="regNum">Registration Number(UID):</label>
+                        <input id="regNum" type="text">
+                        <label for="">Mobile Number:</label>
+                        <input id="mNum" type="number" required>                                          
+                        <label for="">Name:</label>
+                        <input id="mName" type="text" required>
+                        <label for="">Address:</label>
+                        <input id="mAdd" type="text" required>
+                        <label for="cylCount">Cylinder Available</label>
+                        <input id="cylCount" type="number">
+                        <div id="refillBtn">
+                        <button type="submit">Confirm Order</button>
+                        <button id="BtnCancel" type="button">Cancel</button>
+                        </div>
+
+                    </form>
+                </div>
         </div>
 
         <div id="profileSec" style="display: none;">
             <h1>Your Profile</h1>
             <form action="submit">
+                <Label>Name:</Label>
                 <input id="inputName" type="text" placeholder="Name" disabled>
+                <Label>Email:</Label>
                 <input id="inputEmail" type="text" placeholder="Email" disabled>
+                <Label>Aadhar No:</Label>
                 <input id="inputAadhar" type="text" placeholder="Your Aadhar Number" disabled>
+                <Label>Mobile:</Label>
                 <input id="inputMobile" type="number" placeholder="Enter Aadhar Linked Mobile Number." disabled>
+                <Label>Address:</Label>
                 <input id="inputAddress" type="text" placeholder="Your complete Postal Address." disabled>
                 <div id="formBtn">
                     <button id="modifyBtn" type="button">Modify</button>    
@@ -57,6 +92,21 @@
 
         <div id="bookingSec" style="display: none;">
             <h1>Your Bookings</h1>
+            <div id="container">
+            <table id="bookingTable">
+                <thead>
+                  <tr>
+                    <th>Date</th>
+                    <th>OrderId</th>
+                    <th>Status</th>
+                    <th>Payment</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <!-- Bookings will be inserted here -->
+                </tbody>
+              </table>
+            </div>
         </div>
 
         <div id="paymentSec" style="display: none;">

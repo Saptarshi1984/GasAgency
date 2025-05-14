@@ -1,7 +1,7 @@
 import './style.scss';
 import { auth } from './firebase.js';
 import { signOut, onAuthStateChanged } from "firebase/auth";
-import { getFirestore, doc, getDoc } from "firebase/firestore";
+import { getFirestore, doc, getDoc, setDoc, updateDoc, addDoc, collection, getDocs } from "firebase/firestore";
 
 const db = getFirestore();
 
@@ -42,6 +42,44 @@ onAuthStateChanged(auth, async (user) => {
       // An error happened.
     })
   });
+
+  const save_btn = document.getElementById('saveBtn');
+
+  save_btn.addEventListener('click', async (e) => {
+  e.preventDefault();
+
+  if(!currentUser) {
+    alert('User not Logged in');
+    window.location.href = '/index.html';
+  }
+      
+   const userDocRef = doc(db, 'users', currentUser.uid);
+
+   const updatedData = {
+    name: document.getElementById("inputName").value.trim(),
+    email: document.getElementById("inputEmail").value.trim(),
+    aadhar: document.getElementById("inputAadhar").value.trim(),
+    mobile: document.getElementById("inputMobile").value.trim(),
+    address: document.getElementById("inputAddress").value.trim(),
+  };
+
+  try {
+    await updateDoc(userDocRef, updatedData);
+
+    // Disable fields again
+    ["inputName", "inputEmail", "inputAadhar", "inputMobile", "inputAddress"].forEach(id => {
+      document.getElementById(id).disabled = true;
+    });
+
+    document.getElementById("saveBtn").disabled = true;
+
+    alert("Profile updated successfully!");
+  } catch (error) {
+    console.error("Error updating profile:", error);
+    alert("Failed to update profile.");
+  }
+
+  })
   
   const dashboard = document.getElementById('dashboardSec');
   const profile = document.getElementById('profileSec');
@@ -57,6 +95,8 @@ onAuthStateChanged(auth, async (user) => {
     dashboard_tab.classList.toggle('active');
     dashboard.style.display = "flex";
     profile.style.display = "none";
+    booking.style.display = "none";
+    payment.style.display = "none";
     profile_tab.classList.remove('active');
     bookings_tab.classList.remove('active');
     payment_tab.classList.remove('active');
@@ -91,8 +131,8 @@ onAuthStateChanged(auth, async (user) => {
     } 
   } 
   })
-
-  bookings_tab.addEventListener('click', (e) => {
+  /* Onclicking the bookings tab */
+  bookings_tab.addEventListener('click', async (e) => {
     e.preventDefault();
     profile_tab.classList.remove('active');
     dashboard_tab.classList.remove('active');
@@ -102,6 +142,26 @@ onAuthStateChanged(auth, async (user) => {
     dashboard.style.display = "none";
     booking.style.display = "flex";
     payment.style.display = "none";
+
+    const tableBody = document.getElementById('#bookingTable tbody');
+    tableBody.innerHTML = "";
+
+    const userOrderRef = collection(db, 'orders', currentUser.uid, 'userOrders');
+    const userDataSnap = await getDocs(userOrderRef);
+
+    userDataSnap.forEach((doc) => {
+      const data = doc.data();
+
+      const row = document.querySelector('tr');
+
+      row.innerHTML = `<td>${data.dateOfOrder}</td>
+                       <td>${data.idOfOrder}</td>
+                       <td>${data.Amount}</td>
+                       <td>${data.status}</td>`;
+
+      tableBody.appendChild(row);
+    });
+
   })
   payment_tab.addEventListener('click', (e) => {
     e.preventDefault();
@@ -129,3 +189,78 @@ onAuthStateChanged(auth, async (user) => {
   document.getElementById('saveBtn').addEventListener('click', () => {
     
   })
+/* On clicking the request tab */
+  document.getElementById('request').addEventListener('click', async (e) => {
+    e.preventDefault();
+  
+    document.getElementById('refill').style.display = "flex";
+
+    if(currentUser) {
+      
+      const docref = doc(db, 'users', currentUser.uid);
+      const docBookRef = doc(db, 'Bookings', currentUser.uid)
+      const docSnap = await getDoc(docref);
+      const docBookSnap = await getDoc(docBookRef);
+      document.getElementById('regNum').value = currentUser.uid
+
+    if(docSnap.exists()) {
+      const userData = docSnap.data();
+      const bookingData = docBookSnap.data();
+
+      document.getElementById('mName').value = userData.name || "";
+      document.getElementById('mNum').value = userData.mobile || "";
+      document.getElementById('mAdd').value = userData.address || "";
+      document.getElementById('cylCount').value = bookingData.CylCount || "";
+    }       
+      ['regNum', 'mName', 'mNum', 'mAdd', 'cylCount'].forEach((id) => {
+      document.getElementById(id).disabled = 'true';
+      })
+    }    
+  }) 
+
+  /* Confirm Ordder Button */
+  document.getElementById('refillOrder').addEventListener('submit', async (e) => {
+    e.preventDefault();
+           
+      if(!regNum || !mName || !mNum || !mAdd || !cylCount){
+    alert("incomplete Profile!");
+    return;
+  } 
+  const now = new Date();
+  const day = now.getDate();
+  const month = now.getMonth() + 1;
+  const year = now.getFullYear();
+  const orderDate = `${day}/${month}/${year}`;
+  const orderId = `${day}${month}${year}${currentUser.uid.slice(0,4).toUpperCase()}${Math.floor(Math.random() * 1000)}`;
+  const payableAmt = 990.00;
+  
+  const CylOrderRef = collection(db, 'orders', currentUser.uid, 'userOrders');
+  /* const CylOrderRef = doc(db, 'orders', currentUser.uid); */
+  const bookingRec = doc(db, 'Bookings', currentUser.uid);
+
+        addDoc(CylOrderRef, {
+              dateOfOrder: orderDate,
+              idOfOrder: orderId,
+              Amount: payableAmt
+        })
+        
+  const bookingSnap = await getDoc(bookingRec);
+  if( bookingSnap.exists()){
+      const bookingData =  bookingSnap.data()
+      const updateCylCount = bookingData.CylCount - 1;
+    
+      await updateDoc(bookingRec,{
+        CylCount: updateCylCount
+      });
+  }      
+
+        alert(`'Order Placed Succesfully with order id:' ${orderId}`);
+        document.getElementById('refill').style.display = 'none';
+  })
+
+ 
+  /* Cancel Button */
+  document.getElementById('BtnCancel').addEventListener('click', () => {
+  document.getElementById('refill').style.display = 'none';
+})
+

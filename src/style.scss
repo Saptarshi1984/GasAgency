@@ -219,8 +219,40 @@ body{
   }
 }
 #dash{
+  width: 85%;
+  
+}
+#dashboardSec {
+  @include flex-col;
+  gap: 4rem;
   width: 80%;
-  display: flex;
+  height: auto;
+  margin:4rem auto;
+}
+
+#request{
+  background: var(--background-dark);
+  width: 240px;
+  height: 250px;
+  border: solid 2px rgb(162, 162, 162);
+  border-radius: 12px;
+  text-align: center;
+  box-shadow: 0 08px 12px rgb(162, 162, 162);
+  transition: transform 0.3s ease-in-out;
+
+  img{
+    width: 100%;
+    height: 80%;
+    border-radius:10px 10px 0 0;    
+  }
+  h3 {
+    padding: 0.4rem
+  }
+  &:hover{
+    transform: translateY(-10px);
+    box-shadow: 0 08px 16px rgb(185, 185, 185);
+  }
+
 }
 #profileSec{
   @include flex-col;
@@ -255,4 +287,61 @@ body{
     background: var(--background-light);
     border: solid 2px var(--background-dark);
   }
+}
+#refill {
+  justify-content: center; 
+
+  form{
+    @include flex-col;
+    gap: 1rem;
+    width: 50%;
+    label {
+      margin-left: 5rem;
+      font-family: var(--title-font);
+      font-size: 1.4rem;
+      color: aliceblue;
+    }
+    input{
+      margin: auto;
+      width: 80%;
+      padding: 0.4rem;
+    }
+    button{
+      margin: auto;
+      @include btnPrimary;
+      width: 25%;
+      padding: 0.8rem;
+    }
+  }
+}
+#refillBtn{
+  @include flex-row;
+  width: 80%;
+  margin: auto;
+}
+#bookingSec{
+  flex-direction: column;
+  margin: 20px auto;
+  align-items: center;
+}
+#container {
+  @include flex-row;
+  gap: 1rem;
+  width: 80%;
+  margin: auto;
+  overflow-x: auto;
+}
+#bookingTable{
+  margin: 20px auto;
+}
+table {
+  width: 100%;  
+}
+thead {
+  background-color: #f0f0f0;
+}
+th, td {
+  border: 1px solid #ddd;
+  padding: 10px;
+  text-align: center;
 }

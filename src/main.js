@@ -52,11 +52,19 @@ const statusMsg = document.getElementById('status');
     try {
 
       const docRef = doc(db, "users", userCredential.user.uid);
-      setDoc(docRef, {
+      const docRefBookings = doc(db, "Bookings", userCredential.user.uid);
+
+      
+       setDoc(docRef, {
         name:newName.value,
         email:emailNew.value
-      }); 
-          /* alert("Account Created."); */
+      }),
+
+       setDoc(docRefBookings, {
+        CylCount: 12,
+        RegDate: new Date()
+      })
+            
           statusMsg.innerHTML = "Account Created Successfully.";
           newName.value = "";
           emailNew.value = "";
