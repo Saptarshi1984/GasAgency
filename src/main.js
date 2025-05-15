@@ -87,7 +87,20 @@ const statusMsg = document.getElementById('status');
     });   
   })
   
-  
+  /* Admin Login */
+
+  document.getElementById('adminLog').addEventListener('click', (e) => {
+    e.preventDefault();
+    const admin_email = document.getElementById('adminEmail').value;
+    const admin_pwd = document.getElementById('adminPwd').value;
+
+    if(admin_email === 'admin@gmail.com' && admin_pwd === 'admin1' ) {
+      window.location.href = '/admin.html';
+    } else {
+      alert('Invalid userId or Password');
+    }
+
+  })
 
 
 

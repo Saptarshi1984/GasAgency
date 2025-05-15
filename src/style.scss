@@ -335,6 +335,7 @@ body{
   margin: 20px auto;
 }
 table {
+  font-family: var(--title-font);
   width: 100%;  
 }
 thead {
@@ -344,4 +345,18 @@ th, td {
   border: 1px solid #ddd;
   padding: 10px;
   text-align: center;
+}
+td{
+  color: aliceblue;
+  letter-spacing: 1px;
+
+  button{
+    padding: 0.4rem;
+    border: none;
+
+    &:hover{
+      background: var(--background-dark);
+      color: white;
+    }
+  }
 }

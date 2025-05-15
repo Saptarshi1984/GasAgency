@@ -84,11 +84,11 @@ onAuthStateChanged(auth, async (user) => {
   const dashboard = document.getElementById('dashboardSec');
   const profile = document.getElementById('profileSec');
   const booking = document.getElementById('bookingSec');
-  const payment = document.getElementById('paymentSec');
+ 
   const dashboard_tab =  document.getElementById('dashboardTab')
   const profile_tab = document.getElementById('profileTab');
   const bookings_tab =  document.getElementById('bookingsTab')
-  const payment_tab =  document.getElementById('paymentTab')
+
   
   dashboard_tab.addEventListener('click', (e) => {
     e.preventDefault();
@@ -96,10 +96,10 @@ onAuthStateChanged(auth, async (user) => {
     dashboard.style.display = "flex";
     profile.style.display = "none";
     booking.style.display = "none";
-    payment.style.display = "none";
+
     profile_tab.classList.remove('active');
     bookings_tab.classList.remove('active');
-    payment_tab.classList.remove('active');
+
 
   })
 
@@ -109,11 +109,11 @@ onAuthStateChanged(auth, async (user) => {
     profile_tab.classList.toggle('active');
     dashboard_tab.classList.remove('active');
     bookings_tab.classList.remove('active');
-    payment_tab.classList.remove('active');
+
     profile.style.display = "flex";
     dashboard.style.display = "none";
     booking.style.display = "none";
-    payment.style.display = "none"; 
+
     
     if(currentUser) {
     
@@ -136,43 +136,32 @@ onAuthStateChanged(auth, async (user) => {
     e.preventDefault();
     profile_tab.classList.remove('active');
     dashboard_tab.classList.remove('active');
-    bookings_tab.classList.toggle('active');
-    payment_tab.classList.remove('active');
+    bookings_tab.classList.toggle('active');   
     profile.style.display = "none";
     dashboard.style.display = "none";
     booking.style.display = "flex";
-    payment.style.display = "none";
+    
 
-    const tableBody = document.getElementById('#bookingTable tbody');
-    tableBody.innerHTML = "";
-
+    const tableBody = document.getElementById('bookingLists');    
+    tableBody.innerHTML = '';
     const userOrderRef = collection(db, 'orders', currentUser.uid, 'userOrders');
     const userDataSnap = await getDocs(userOrderRef);
 
     userDataSnap.forEach((doc) => {
       const data = doc.data();
 
-      const row = document.querySelector('tr');
+      const row = document.createElement('tr');
 
       row.innerHTML = `<td>${data.dateOfOrder}</td>
                        <td>${data.idOfOrder}</td>
-                       <td>${data.Amount}</td>
-                       <td>${data.status}</td>`;
-
+                       <td>${data.Amount}.00</td>
+                       <td>${data.status || 'Pending'}</td>
+                       <td><button type="button">Pay Now</button></td>`; 
+                       
       tableBody.appendChild(row);
+           
     });
 
-  })
-  payment_tab.addEventListener('click', (e) => {
-    e.preventDefault();
-    profile_tab.classList.remove('active');
-    dashboard_tab.classList.remove('active');
-    bookings_tab.classList.remove('active');
-    payment_tab.classList.toggle('active');
-    profile.style.display = "none";
-    dashboard.style.display = "none";
-    booking.style.display = "none";
-    payment.style.display = "flex";
   })
 
   document.getElementById('modifyBtn').addEventListener('click', () => {
@@ -235,7 +224,6 @@ onAuthStateChanged(auth, async (user) => {
   const payableAmt = 990.00;
   
   const CylOrderRef = collection(db, 'orders', currentUser.uid, 'userOrders');
-  /* const CylOrderRef = doc(db, 'orders', currentUser.uid); */
   const bookingRec = doc(db, 'Bookings', currentUser.uid);
 
         addDoc(CylOrderRef, {
@@ -247,7 +235,7 @@ onAuthStateChanged(auth, async (user) => {
   const bookingSnap = await getDoc(bookingRec);
   if( bookingSnap.exists()){
       const bookingData =  bookingSnap.data()
-      const updateCylCount = bookingData.CylCount - 1;
+      const updateCylCount = bookingData.CylCount - 1; //Updating the cylinder count.
     
       await updateDoc(bookingRec,{
         CylCount: updateCylCount
