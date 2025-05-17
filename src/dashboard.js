@@ -42,44 +42,7 @@ onAuthStateChanged(auth, async (user) => {
       // An error happened.
     })
   });
-
-  const save_btn = document.getElementById('saveBtn');
-
-  save_btn.addEventListener('click', async (e) => {
-  e.preventDefault();
-
-  if(!currentUser) {
-    alert('User not Logged in');
-    window.location.href = '/index.html';
-  }
-      
-   const userDocRef = doc(db, 'users', currentUser.uid);
-
-   const updatedData = {
-    name: document.getElementById("inputName").value.trim(),
-    email: document.getElementById("inputEmail").value.trim(),
-    aadhar: document.getElementById("inputAadhar").value.trim(),
-    mobile: document.getElementById("inputMobile").value.trim(),
-    address: document.getElementById("inputAddress").value.trim(),
-  };
-
-  try {
-    await updateDoc(userDocRef, updatedData);
-
-    // Disable fields again
-    ["inputName", "inputEmail", "inputAadhar", "inputMobile", "inputAddress"].forEach(id => {
-      document.getElementById(id).disabled = true;
-    });
-
-    document.getElementById("saveBtn").disabled = true;
-
-    alert("Profile updated successfully!");
-  } catch (error) {
-    console.error("Error updating profile:", error);
-    alert("Failed to update profile.");
-  }
-
-  })
+ 
   
   const dashboard = document.getElementById('dashboardSec');
   const profile = document.getElementById('profileSec');
@@ -96,10 +59,8 @@ onAuthStateChanged(auth, async (user) => {
     dashboard.style.display = "flex";
     profile.style.display = "none";
     booking.style.display = "none";
-
     profile_tab.classList.remove('active');
     bookings_tab.classList.remove('active');
-
 
   })
 
@@ -109,7 +70,6 @@ onAuthStateChanged(auth, async (user) => {
     profile_tab.classList.toggle('active');
     dashboard_tab.classList.remove('active');
     bookings_tab.classList.remove('active');
-
     profile.style.display = "flex";
     dashboard.style.display = "none";
     booking.style.display = "none";
@@ -156,33 +116,78 @@ onAuthStateChanged(auth, async (user) => {
                        <td>${data.idOfOrder}</td>
                        <td>${data.Amount}.00</td>
                        <td>${data.status || 'Pending'}</td>
-                       <td><button type="button">Pay Now</button></td>`; 
+                       <td><button  class ='btnPrimary' type="button">Pay Now</button></td>`; 
                        
       tableBody.appendChild(row);
            
     });
 
   })
-
+  
+  /* Onclicking modify button input field will become active for editing */
   document.getElementById('modifyBtn').addEventListener('click', () => {
 
-    document.getElementById('inputName').disabled = false;
-    document.getElementById('inputEmail').disabled = false;
-    document.getElementById('inputAadhar').disabled = false;
-    document.getElementById('inputMobile').disabled= false;
-    document.getElementById('inputAddress').disabled= false;
+    ['inputName', 'inputEmail', 'inputAadhar', 'inputMobile', 'inputAddress', 'saveBtn'].forEach((id) => {
 
-    document.getElementById('saveBtn').disabled= false;
-  })
+     document.getElementById(id).disabled = false;
 
-  document.getElementById('saveBtn').addEventListener('click', () => {
+    })
     
+    document.getElementById('modifyBtn').disabled = true;
+    document.getElementById('modifyBtn').classList.add("inActive");
+    document.getElementById('modifyBtn').classList.remove("btnPrimary");
+    document.getElementById('saveBtn').classList.add('btnPrimary');   
+   
+
+  })
+/* Onclicking the save button */
+ const save_btn = document.getElementById('saveBtn');
+
+  save_btn.addEventListener('click', async (e) => {
+  e.preventDefault();
+
+  if(!currentUser) {
+    alert('User not Logged in');
+    window.location.href = '/index.html';
+  }
+      
+   const userDocRef = doc(db, 'users', currentUser.uid);
+
+   const updatedData = {
+    name: document.getElementById("inputName").value.trim(),
+    email: document.getElementById("inputEmail").value.trim(),
+    aadhar: document.getElementById("inputAadhar").value.trim(),
+    mobile: document.getElementById("inputMobile").value.trim(),
+    address: document.getElementById("inputAddress").value.trim(),
+  };
+
+  try {
+    await updateDoc(userDocRef, updatedData);
+
+    // Disable fields again
+    ["inputName", "inputEmail", "inputAadhar", "inputMobile", "inputAddress", "saveBtn"].forEach(id => {
+      document.getElementById(id).disabled = true;
+    });
+
+    document.getElementById("saveBtn").classList.remove("btnPrimary");
+
+    alert("Profile updated successfully!");
+  } catch (error) {
+    console.error("Error updating profile:", error);
+    alert("Failed to update profile.");
+  }
+
+  document.getElementById('modifyBtn').disabled = false;
+  document.getElementById('modifyBtn').classList.add('btnPrimary');
+  document.getElementById('modifyBtn').classList.remove('inActive');
+
   })
 /* On clicking the request tab */
   document.getElementById('request').addEventListener('click', async (e) => {
     e.preventDefault();
   
     document.getElementById('refill').style.display = "flex";
+    
 
     if(currentUser) {
       
@@ -204,10 +209,11 @@ onAuthStateChanged(auth, async (user) => {
       ['regNum', 'mName', 'mNum', 'mAdd', 'cylCount'].forEach((id) => {
       document.getElementById(id).disabled = 'true';
       })
-    }    
+    }
+
   }) 
 
-  /* Confirm Ordder Button */
+  /* Confirm Order Button */
   document.getElementById('refillOrder').addEventListener('submit', async (e) => {
     e.preventDefault();
            

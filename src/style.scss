@@ -45,9 +45,27 @@ a{
 body{
   overflow-y: hidden;
 }
-.active{
+.btnPrimary {
+  width: 25%;
+  background:var(--background-dark);
+  color: aliceblue;
+  font-family: var(--navLink-font);
+  letter-spacing: 1px;
+  border: solid 2px var(--background-light);
+  border-radius: 10px;
+  cursor: pointer;
+}
+.btnPrimary:hover{
   background: var(--background-light);
-  border-radius: 18px;
+  border:solid 2px var(--background-dark);
+}
+.inActive{
+  padding: 0.4rem;
+  color: aliceblue;
+  font-family: var(--navLink-font);
+  letter-spacing: 1px;
+  border: solid 2px var(--background-light);
+  border-radius: 10px;
 }
 .logo{
   font-family: var(--brand-font);
@@ -230,13 +248,13 @@ body{
   margin:4rem auto;
 }
 
-#request{
+#request, #adminReq{
   background: var(--background-dark);
   width: 240px;
   height: 250px;
   border: solid 2px rgb(162, 162, 162);
   border-radius: 12px;
-  text-align: center;
+  text-align: center; 
   box-shadow: 0 08px 12px rgb(162, 162, 162);
   transition: transform 0.3s ease-in-out;
 
@@ -280,14 +298,7 @@ body{
   width: 50%;
   margin: auto;
 }
-#modifyBtn, #saveBtn {
-  @include btnPrimary;
-  width: 10%;
-  &:hover{
-    background: var(--background-light);
-    border: solid 2px var(--background-dark);
-  }
-}
+
 #refill {
   justify-content: center; 
 
@@ -306,18 +317,20 @@ body{
       width: 80%;
       padding: 0.4rem;
     }
-    button{
-      margin: auto;
-      @include btnPrimary;
-      width: 25%;
-      padding: 0.8rem;
-    }
+
   }
 }
 #refillBtn{
+  padding: 1rem;
   @include flex-row;
-  width: 80%;
-  margin: auto;
+  gap: 1rem;
+  align-items: center; 
+  justify-content: center; 
+  width: 100%;
+
+  button{
+    padding: 0.4rem;
+  }
 }
 #bookingSec{
   flex-direction: column;
@@ -359,4 +372,8 @@ td{
       color: white;
     }
   }
+}
+#adminServices{
+  @include flex-row;
+  justify-content: space-around;
 }

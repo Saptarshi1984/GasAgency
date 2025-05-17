@@ -39,35 +39,33 @@
     <div id="dash">
 
         <div id="dashboardSec">
-            <h1>Admin Dashboard</h1>            
-<!--                <div id="request">
-                  <a href="">
+            <h1>Admin Dashboard</h1> 
+              <div id="adminServices">
+                <div id="adminReq">
+                  <a id="accAprvl" href="">
                     <img src="https://res.cloudinary.com/dytxyfzyd/image/upload/v1746626948/ChatGPT_Image_May_7_2025_07_34_53_PM_vsfcxy.png" alt="">
-                    <h3>Request Refill</h3>
+                    <h3>Account Approval</h3>
                   </a>
-                </div> -->
-                <hr>
-                <div id="refill" style="display: none;">
-                    
-                    <form id="refillOrder" action="">
-                        
-                        <label for="regNum">Registration Number(UID):</label>
-                        <input id="regNum" type="text">
-                        <label for="">Mobile Number:</label>
-                        <input id="mNum" type="number" required>                                          
-                        <label for="">Name:</label>
-                        <input id="mName" type="text" required>
-                        <label for="">Address:</label>
-                        <input id="mAdd" type="text" required>
-                        <label for="cylCount">Cylinder Available</label>
-                        <input id="cylCount" type="number">
-                        <div id="refillBtn">
-                        <button type="submit">Confirm Order</button>
-                        <button id="BtnCancel" type="button">Cancel</button>
-                        </div>
-
-                    </form>
                 </div>
+
+                 <div id="adminReq">
+                  <a id="pendReq" href="">
+                    <img src="https://res.cloudinary.com/dytxyfzyd/image/upload/v1746626948/ChatGPT_Image_May_7_2025_07_34_53_PM_vsfcxy.png" alt="">
+                    <h3>Pending Requests</h3>
+                  </a>
+                </div>
+
+                <div id="adminReq">
+                  <a id="ordPros" href="">
+                    <img src="https://res.cloudinary.com/dytxyfzyd/image/upload/v1746626948/ChatGPT_Image_May_7_2025_07_34_53_PM_vsfcxy.png" alt="">
+                    <h3>Order Processed</h3>
+                  </a>
+                </div>
+            </div>
+                <hr>
+
+                 
+
         </div>
         </div>
 <script type="module" src="./src/admin.js"></script>
