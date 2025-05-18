@@ -1,6 +1,6 @@
 import './style.scss';
 import {auth} from './firebase.js';
-import {doc, setDoc, getFirestore} from "firebase/firestore";
+import {doc, setDoc, getFirestore, getDocs, collection} from "firebase/firestore";
 import {signInWithEmailAndPassword, createUserWithEmailAndPassword} from "firebase/auth";
 
 const db = getFirestore();
@@ -89,15 +89,25 @@ const statusMsg = document.getElementById('status');
   
   /* Admin Login */
 
-  document.getElementById('adminLog').addEventListener('click', (e) => {
+  document.getElementById('adminLog').addEventListener('click', async (e) => {
     e.preventDefault();
     const admin_email = document.getElementById('adminEmail').value;
     const admin_pwd = document.getElementById('adminPwd').value;
 
-    if(admin_email === 'admin@gmail.com' && admin_pwd === 'admin1' ) {
+    const admin_snapshot = await getDocs(collection(db, "admin"));
+    const admin_list = admin_snapshot.docs.map(doc => doc.data());
+
+    const matched_admin = admin_list.find(admin => 
+      admin.email === admin_email && admin.password === admin_pwd
+    );
+
+    if(matched_admin) {
+
+      sessionStorage.setItem("AdminEmail", matched_admin.email);
+
       window.location.href = '/admin.html';
     } else {
-      alert('Invalid userId or Password');
+      alert.error('Invalid Credentials, Please try again');
     }
 
   })

@@ -247,7 +247,11 @@ body{
   height: auto;
   margin:4rem auto;
 }
-
+#adminReq {
+  @include flex-col;
+  gap: 1rem;
+  justify-content: center;
+}
 #request, #adminReq{
   background: var(--background-dark);
   width: 240px;
