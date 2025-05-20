@@ -203,6 +203,10 @@ body{
     object-fit: contain;
   }
 
+  input{    
+    margin: auto;
+  }
+
   button{
     @include btnPrimary;
     margin: auto;

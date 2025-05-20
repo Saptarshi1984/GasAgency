@@ -1,10 +1,12 @@
 import './style.scss';
 import {auth} from './firebase.js';
-import {doc, setDoc, getFirestore, getDocs, collection} from "firebase/firestore";
+import {doc, setDoc, getFirestore, getDoc, getDocs, collection} from "firebase/firestore";
 import {signInWithEmailAndPassword, createUserWithEmailAndPassword} from "firebase/auth";
+import { getAuth, signInWithPopup, GoogleAuthProvider } from 'firebase/auth';
 
 const db = getFirestore();
-
+const gAuth = getAuth();
+const provider = new GoogleAuthProvider();
 
 const emailId = document.getElementById("userEmail");
 const passwordInput = document.getElementById("userPassword");
@@ -36,7 +38,48 @@ const statusMsg = document.getElementById('status');
 
       })
         
-    });  
+    });
+    
+    /* Login with Gmail */
+     document.getElementById('googleLogin').addEventListener('click', async (e) => {
+  e.preventDefault();
+
+  try {
+    const result = await signInWithPopup(gAuth, provider);
+    const credential = GoogleAuthProvider.credentialFromResult(result);
+    const token = credential.accessToken;
+    const user = result.user;
+
+    const userDocRef = doc(db, "users", user.uid);
+    const userBookingsDocRef = doc(db, "Bookings", user.uid);
+
+    const userDocSnap = await getDoc(userDocRef);
+    const userBookingsSnap = await getDoc(userBookingsDocRef);
+
+    if (!userDocSnap.exists()) {
+      await setDoc(userDocRef, {
+        name: user.displayName,
+        email: user.email
+      });
+    }
+
+    if (!userBookingsSnap.exists()) {
+      await setDoc(userBookingsDocRef, {
+        CylCount: 12,
+        RegDate: new Date()
+      });
+    }
+
+    window.location.href = '/dashboard.html';
+
+  } catch (error) {
+    const errorCode = error.code;
+    const errorMessage = error.message;
+    const email = error.customData?.email;
+    const credential = GoogleAuthProvider.credentialFromError(error);
+    alert("Login Error! " + errorMessage);
+  }
+});
 
       //Registration using email and password and storing data to firestore.
       createAccount.addEventListener('click', async () => {
@@ -77,8 +120,7 @@ const statusMsg = document.getElementById('status');
 
     }
   
-    })
-  
+    })  
     .catch((error) => {
       const errorCode = error.code;
       const errorMessage = error.message;

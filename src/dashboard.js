@@ -5,9 +5,17 @@ import { getFirestore, doc, getDoc, setDoc, updateDoc, addDoc, collection, getDo
 
 const db = getFirestore();
 
+
 const logout = document.getElementById('logout');
 
 let currentUser = null;
+
+  /* EmailJS Initialization */
+     (function(){
+      emailjs.init({
+        publicKey: "UhBBBYsV5Pm9nqJgp",
+      });
+   })();
 
 //onAuthStateChanged
 onAuthStateChanged(auth, async (user) => {
@@ -64,6 +72,7 @@ onAuthStateChanged(auth, async (user) => {
 
   })
 
+  /* Fetching user data */
   profile_tab.addEventListener('click', async (e) => {
     e.preventDefault();
 
@@ -213,12 +222,20 @@ onAuthStateChanged(auth, async (user) => {
 
   }) 
 
-  /* Confirm Order Button */
+  /* Confirm Order Button */     
+
   document.getElementById('refillOrder').addEventListener('submit', async (e) => {
-    e.preventDefault();
-           
+  e.preventDefault();
+
+      const regNum = document.getElementById('regNum').value;
+      const mName = document.getElementById('mName').value;
+      const mNum = document.getElementById('mNum').value;
+      const mAdd = document.getElementById('mAdd').value;
+      const cylCount = document.getElementById('cylCount').value;
+
+                
       if(!regNum || !mName || !mNum || !mAdd || !cylCount){
-    alert("incomplete Profile!");
+    alert("Please Comple Your Profile in your Profile section!");
     return;
   } 
   const now = new Date();
@@ -240,16 +257,25 @@ onAuthStateChanged(auth, async (user) => {
         
   const bookingSnap = await getDoc(bookingRec);
   if( bookingSnap.exists()){
+
       const bookingData =  bookingSnap.data()
       const updateCylCount = bookingData.CylCount - 1; //Updating the cylinder count.
     
       await updateDoc(bookingRec,{
         CylCount: updateCylCount
-      });
-  }      
-
-        alert(`'Order Placed Succesfully with order id:' ${orderId}`);
-        document.getElementById('refill').style.display = 'none';
+      });  
+    }   
+    
+    const sendEmail = currentUser.email;
+    var msgParams = {        
+                      name:mName,
+                      email: sendEmail,
+                      price: payableAmt,
+                      order_id:orderId
+                       }  
+        emailjs.send('service_texmdlm', 'template_roi2uta', msgParams)
+        alert(`'Order Placed Succesfully, email sent, if not check SPAM folder' ${orderId}`);
+        document.getElementById('refill').style.display = 'none';        
   })
 
  
@@ -257,4 +283,7 @@ onAuthStateChanged(auth, async (user) => {
   document.getElementById('BtnCancel').addEventListener('click', () => {
   document.getElementById('refill').style.display = 'none';
 })
+
+
+
 
