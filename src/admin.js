@@ -1,11 +1,11 @@
 import './style.scss';
-import { getFirestore, collection, getDocs } from "firebase/firestore";
+import { collection, getDocs, collectionGroup, query } from "firebase/firestore";
 import { db } from './firebase.js'; 
 
 /* After login fetching admin data */
 window.onload = async () => {
 
-const db = getFirestore();
+//const db = getFirestore();
 
 const AdminEmail = sessionStorage.getItem("AdminEmail");
 
@@ -28,20 +28,51 @@ if(!AdminEmail) {
          }
 
 }
-           const totalSubscriber = document.getElementById("numSubscriber");
-           
-           const fetchUserCount = async () => {
+
+/* Function that fetch total number of users/subscribers */ 
+const totalSubscriber = document.getElementById("numSubscriber");          
+const fetchUserCount = async () => {
   try {
     const userData = collection(db, "users");
     const userDataSnap = await getDocs(userData);
-    totalSubscriber.textContent = `{${userDataSnap.size}}`; 
+    totalSubscriber.textContent = userDataSnap.size; 
   } catch (error) {
-    console.error("Error fetching user count:", error);
+    alert("Error fetching user count:", error);
     totalSubscriber.textContent = "Error";
   }
 };
+/* Function that fetch total numbers of orders */
+const totalOrderText = document.getElementById('totalOrders');
+const fetchTotalUserOrders = async () => {
+      
+    const ordersGroup = query(collectionGroup(db, "userOrders"));
+    const snapshot = await getDocs(ordersGroup);
+    
+    totalOrderText.textContent = snapshot.size;    
+     
+}
+const TotalRevenue = document.getElementById('totalRevenue');
+const totalRevenue = async () => {
+      
+   let totalAmount = 0;
+
+    const ordersGroup = query(collectionGroup(db, "userOrders"));
+    const snapshot = await getDocs(ordersGroup);
+
+    snapshot.forEach(doc => {
+            const data = doc.data();
+
+            if(data.Amount) {
+              
+              totalAmount += Number(data.Amount);
+            }            
+    })
+    TotalRevenue.textContent = totalAmount;
+}
 
 fetchUserCount();
+fetchTotalUserOrders();
+totalRevenue();
 }
 
  //SignOut function
