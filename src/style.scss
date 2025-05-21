@@ -59,6 +59,11 @@ body{
   background: var(--background-light);
   border:solid 2px var(--background-dark);
 }
+.active{
+  background: var(--background-light);
+  border-radius: 18px;
+
+}
 .inActive{
   padding: 0.4rem;
   color: aliceblue;
@@ -340,10 +345,37 @@ body{
     padding: 0.4rem;
   }
 }
-#bookingSec{
+#bookingSec, #requestSec{
   flex-direction: column;
   margin: 20px auto;
   align-items: center;
+}
+#requestSec { 
+   @include flex-col;
+   gap: 1rem;
+  p{
+  margin-top: 1rem;
+  padding: 0.4rem;
+  width: 50%;
+  color: aliceblue;
+  font-size: 1.6rem;
+  text-align: justify;
+  hyphens: auto;
+  border: solid 2px rgb(158, 158, 159);
+  }
+  
+  label{
+    color: aliceblue;
+    font-size: 1.4rem;
+    padding: 2px;
+  }
+
+      button{
+      padding: 0.6rem;
+      width: 14%;
+      cursor: pointer;
+    }
+
 }
 #container {
   @include flex-row;

@@ -3,10 +3,25 @@ import { auth } from './firebase.js';
 import { signOut, onAuthStateChanged } from "firebase/auth";
 import { getFirestore, doc, getDoc, setDoc, updateDoc, addDoc, collection, getDocs } from "firebase/firestore";
 
+
+
 const db = getFirestore();
 
 
-const logout = document.getElementById('logout');
+  const dashboard = document.getElementById('dashboardSec');
+  const profile = document.getElementById('profileSec');
+  const booking = document.getElementById('bookingSec');
+  const request = document.getElementById('requestSec');
+  const dashboard_tab =  document.getElementById('dashboardTab')
+  const profile_tab = document.getElementById('profileTab');
+  const bookings_tab =  document.getElementById('bookingsTab')
+  const request_tab = document.getElementById('requestTab');
+  const refill_order = document.getElementById('refillOrder');
+  const refill_btn = document.getElementById('refillBtn');
+  const modify_btn = document.getElementById('modifyBtn'); 
+  const save_btn = document.getElementById('saveBtn');
+
+  const logout = document.getElementById('logout');
 
 let currentUser = null;
 
@@ -51,24 +66,17 @@ onAuthStateChanged(auth, async (user) => {
     })
   });
  
-  
-  const dashboard = document.getElementById('dashboardSec');
-  const profile = document.getElementById('profileSec');
-  const booking = document.getElementById('bookingSec');
- 
-  const dashboard_tab =  document.getElementById('dashboardTab')
-  const profile_tab = document.getElementById('profileTab');
-  const bookings_tab =  document.getElementById('bookingsTab')
-
-  
+  /* On cliking dashboard tab */
   dashboard_tab.addEventListener('click', (e) => {
     e.preventDefault();
     dashboard_tab.classList.toggle('active');
     dashboard.style.display = "flex";
     profile.style.display = "none";
     booking.style.display = "none";
+    request.style.display = "none";
     profile_tab.classList.remove('active');
     bookings_tab.classList.remove('active');
+    request_tab.classList.remove('active');
 
   })
 
@@ -82,6 +90,8 @@ onAuthStateChanged(auth, async (user) => {
     profile.style.display = "flex";
     dashboard.style.display = "none";
     booking.style.display = "none";
+    request.style.display = "none";
+    request_tab.classList.remove('active');
 
     
     if(currentUser) {
@@ -108,7 +118,10 @@ onAuthStateChanged(auth, async (user) => {
     bookings_tab.classList.toggle('active');   
     profile.style.display = "none";
     dashboard.style.display = "none";
+    request.style.display = "none";
     booking.style.display = "flex";
+    request_tab.classList.remove('active');
+    
     
 
     const tableBody = document.getElementById('bookingLists');    
@@ -132,6 +145,53 @@ onAuthStateChanged(auth, async (user) => {
     });
 
   })
+
+  /* Onclicking requests tab */
+  
+  request_tab.addEventListener('click', (e) => {
+    e.preventDefault();
+    request_tab.classList.toggle('active');
+    request.style.display = "flex";    
+    profile.style.display = "none";
+    booking.style.display = "none";
+    dashboard.style.display = "none";
+    profile_tab.classList.remove('active');
+    bookings_tab.classList.remove('active');
+    dashboard_tab.classList.remove('active');
+
+  })
+
+  /* Additional cylinder order process */
+  document.getElementById('addCylCheckBox').addEventListener('change', function () {
+    if(this.checked) {
+      document.getElementById('addCylinder').style.display = "block";
+    } else {
+      document.getElementById('addCylinder').style.display = "none";
+    }
+  })
+  document.getElementById('addCylinder').addEventListener('click', async () => {
+  
+  try {
+    ['declaration', 'checkBox', 'addCylinder'].forEach((id) => {
+      document.getElementById(id).style.display = 'none';
+    })    
+    
+/*     const bookingRecRef =  doc(db, 'Bookings', currentUser.uid);
+
+    await setDoc(bookingRecRef,{
+          CylCount: 1
+    }) */
+
+    const messageStatus = document.getElementById('confirmMsg');
+    messageStatus.style.cssText = 'display:block; width:50%; font-size:1.6rem;';
+    messageStatus.textContent = 'Your request is received and under reveiw. An email will be sent to your registered email Id for further communication.';
+  }
+
+  catch (error) {
+    const errorMsg = error.Message || 'Unknown error';
+    alert('Error in processing additional cylinder' + errorMsg);
+  }
+  })
   
   /* Onclicking modify button input field will become active for editing */
   document.getElementById('modifyBtn').addEventListener('click', () => {
@@ -141,17 +201,16 @@ onAuthStateChanged(auth, async (user) => {
      document.getElementById(id).disabled = false;
 
     })
-    
-    document.getElementById('modifyBtn').disabled = true;
-    document.getElementById('modifyBtn').classList.add("inActive");
-    document.getElementById('modifyBtn').classList.remove("btnPrimary");
+
+
+    modify_btn.disabled = true;
+    modify_btn.classList.add("inActive");
+    modify_btn.classList.remove("btnPrimary");
     document.getElementById('saveBtn').classList.add('btnPrimary');   
    
 
   })
 /* Onclicking the save button */
- const save_btn = document.getElementById('saveBtn');
-
   save_btn.addEventListener('click', async (e) => {
   e.preventDefault();
 
@@ -186,9 +245,9 @@ onAuthStateChanged(auth, async (user) => {
     alert("Failed to update profile.");
   }
 
-  document.getElementById('modifyBtn').disabled = false;
-  document.getElementById('modifyBtn').classList.add('btnPrimary');
-  document.getElementById('modifyBtn').classList.remove('inActive');
+  modify_btn.disabled = false;
+  modify_btn.classList.add('btnPrimary');
+  modify_btn.classList.remove('inActive');
 
   })
 /* On clicking the request tab */
@@ -213,18 +272,26 @@ onAuthStateChanged(auth, async (user) => {
       document.getElementById('mName').value = userData.name || "";
       document.getElementById('mNum').value = userData.mobile || "";
       document.getElementById('mAdd').value = userData.address || "";
-      document.getElementById('cylCount').value = bookingData.CylCount || "";
+      document.getElementById('cylCount').value = bookingData.CylCount || "0";
+
+          if(Number(bookingData.CylCount) <= 0) {
+          refill_btn.innerHTML= '';
+          const divEle = document.createElement('div');
+          divEle.innerHTML = "<h2>You have ran-out of your alloted cylinders.</h2><h3>Go to Requests tab and Request Extra Cylinders</h3>";
+          divEle.style.cssText = "display:flex; flex-direction:column; gap: 0.8rem;text-align:center; letter-spacing:1px;";
+          refill_btn.appendChild(divEle);                    
+          }
     }       
       ['regNum', 'mName', 'mNum', 'mAdd', 'cylCount'].forEach((id) => {
       document.getElementById(id).disabled = 'true';
       })
-    }
 
+
+    }
   }) 
 
-  /* Confirm Order Button */     
-
-  document.getElementById('refillOrder').addEventListener('submit', async (e) => {
+  /* Confirm Order Button */   
+  refill_order.addEventListener('submit', async (e) => {
   e.preventDefault();
 
       const regNum = document.getElementById('regNum').value;
@@ -256,16 +323,20 @@ onAuthStateChanged(auth, async (user) => {
         })
         
   const bookingSnap = await getDoc(bookingRec);
-  if( bookingSnap.exists()){
 
-      const bookingData =  bookingSnap.data()
-      const updateCylCount = bookingData.CylCount - 1; //Updating the cylinder count.
+
+  if( bookingSnap.exists()){
+      
+          const bookingData =  bookingSnap.data()
+          const updateCylCount = bookingData.CylCount - 1; //Updating the cylinder count.
     
-      await updateDoc(bookingRec,{
-        CylCount: updateCylCount
-      });  
-    }   
-    
+          await updateDoc(bookingRec,{
+               CylCount: updateCylCount
+               });
+              
+    }
+  
+    /* Sending Email after confirming Order */
     const sendEmail = currentUser.email;
     var msgParams = {        
                       name:mName,
@@ -278,11 +349,12 @@ onAuthStateChanged(auth, async (user) => {
         document.getElementById('refill').style.display = 'none';        
   })
 
- 
+
   /* Cancel Button */
   document.getElementById('BtnCancel').addEventListener('click', () => {
   document.getElementById('refill').style.display = 'none';
 })
+
 
 
 
