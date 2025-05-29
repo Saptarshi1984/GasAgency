@@ -1,7 +1,7 @@
 import './style.scss';
 import { auth } from './firebase.js';
 import { signOut, onAuthStateChanged } from "firebase/auth";
-import { getFirestore, doc, getDoc, setDoc, updateDoc, addDoc, collection, getDocs } from "firebase/firestore";
+import { getFirestore, doc, getDoc, setDoc,query, where, updateDoc, addDoc, collection, getDocs } from "firebase/firestore";
 
 
 
@@ -44,8 +44,8 @@ onAuthStateChanged(auth, async (user) => {
     if (userDocSnap.exists()) {
       const userData = userDocSnap.data();
       document.getElementById("pName").textContent = `Hello, ${userData.name}`;
-      document.getElementById("user-name").textContent = `Name: ${userData.name}`;
-      document.getElementById("user-email").textContent = `Email: ${userData.email}`;
+      /* document.getElementById("user-name").textContent = `Name: ${userData.name}`;
+      document.getElementById("user-email").textContent = `Email: ${userData.email}`; */
     } else {
       console.log("No user data found in Firestore.");
     }
@@ -120,8 +120,7 @@ onAuthStateChanged(auth, async (user) => {
     dashboard.style.display = "none";
     request.style.display = "none";
     booking.style.display = "flex";
-    request_tab.classList.remove('active');
-    
+    request_tab.classList.remove('active');  
     
 
     const tableBody = document.getElementById('bookingLists');    
@@ -138,7 +137,7 @@ onAuthStateChanged(auth, async (user) => {
                        <td>${data.idOfOrder}</td>
                        <td>${data.Amount}.00</td>
                        <td>${data.status || 'Pending'}</td>
-                       <td><button  class ='btnPrimary' type="button">Pay Now</button></td>`; 
+                       <td><button  class ='btnPrimary payNow' type="button">Pay Now</button></td>`; 
                        
       tableBody.appendChild(row);
            
@@ -146,9 +145,8 @@ onAuthStateChanged(auth, async (user) => {
 
   })
 
-  /* Onclicking requests tab */
-  
-  request_tab.addEventListener('click', (e) => {
+  /* Onclicking requests tab */  
+  request_tab.addEventListener('click', async (e) => {
     e.preventDefault();
     request_tab.classList.toggle('active');
     request.style.display = "flex";    
@@ -159,39 +157,86 @@ onAuthStateChanged(auth, async (user) => {
     bookings_tab.classList.remove('active');
     dashboard_tab.classList.remove('active');
 
+    const requestTable = document.getElementById('userRequestsHistory');
+    requestTable.innerHTML = ''; //Refresh data.
+    
+    let SlNo = 1;
+    const cylRequestRef = collection(db, 'db_CylinderReq');
+    const q = query(cylRequestRef, where('uid', '==', currentUser.uid));
+    const querySnapShot = await getDocs(q);
+    
+    
+    querySnapShot.forEach(doc => {      
+    const  reqData = doc.data();
+
+      const row = document.createElement('tr');
+
+      row.innerHTML = `<td>${SlNo++}</td>
+                       <td>${reqData.date}</td>
+                       <td>${doc.id}</td>                       
+                       <td>${reqData.status === '' ? 'Pending' : reqData.status}</td>`;
+
+      requestTable.appendChild(row);
+
+    })
+
   })
 
   /* Additional cylinder order process */
-  document.getElementById('addCylCheckBox').addEventListener('change', function () {
+  document.getElementById('addCylCheckBox').addEventListener('change', async function () {
     if(this.checked) {
-      document.getElementById('addCylinder').style.display = "block";
+      
+      
+      document.getElementById('addCylinder').classList.remove('inActive');
+      
     } else {
-      document.getElementById('addCylinder').style.display = "none";
+      document.getElementById('addCylinder').classList.add('inActive');
+      document.getElementById('addCylinder').classList.remove('active');
+      document.getElementById('addCylinder').disabled = 'true';
+      
     }
   })
-  document.getElementById('addCylinder').addEventListener('click', async () => {
-  
+
+  /* Onclicking Additional Cylinder Request button */
+document.getElementById('addCylinder').addEventListener('click', async () => {
   try {
-    ['declaration', 'checkBox', 'addCylinder'].forEach((id) => {
+    ['declaration', 'checkBox', 'addCylinder'].forEach(id => {
       document.getElementById(id).style.display = 'none';
-    })    
-    
-/*     const bookingRecRef =  doc(db, 'Bookings', currentUser.uid);
+    });
 
-    await setDoc(bookingRecRef,{
-          CylCount: 1
-    }) */
+    const now = new Date();
+    const day = now.getDate();
+    const month = now.getMonth() + 1;
+    const year = now.getFullYear();
+    const currDate = `${day}/${month}/${year}`;
 
+    // Fetch user data from Firestore
+    const userRef = doc(db, 'users', currentUser.uid);
+    const userSnap = await getDoc(userRef);
+    const userData = userSnap.exists() ? userSnap.data() : {};
+
+    const bookinsRef = doc(db, 'Bookings', currentUser.uid );
+    const bookingSnap = getDoc(bookinsRef);
+    const bookingsData = (await bookingSnap).data();
+    const cylinder_request_ref = collection(db, 'db_CylinderReq');
+    if(bookingsData.CylCount === 0){
+    await addDoc(cylinder_request_ref, {
+      name: userData.name || "Unnamed User",
+      uid: currentUser.uid,
+      date: currDate,
+      status: ''
+    });
+  } else {
+    alert("Cylinders are available in your account");
+  }
     const messageStatus = document.getElementById('confirmMsg');
     messageStatus.style.cssText = 'display:block; width:50%; font-size:1.6rem;';
-    messageStatus.textContent = 'Your request is received and under reveiw. An email will be sent to your registered email Id for further communication.';
+    messageStatus.textContent = 'Your request is received and under review. An email will be sent to your registered email ID for further communication.';
+  } catch (error) {
+    const errorMsg = error.message || 'Unknown error';
+    alert('Error in processing additional cylinder: ' + errorMsg);
   }
-
-  catch (error) {
-    const errorMsg = error.Message || 'Unknown error';
-    alert('Error in processing additional cylinder' + errorMsg);
-  }
-  })
+});
   
   /* Onclicking modify button input field will become active for editing */
   document.getElementById('modifyBtn').addEventListener('click', () => {
@@ -250,7 +295,7 @@ onAuthStateChanged(auth, async (user) => {
   modify_btn.classList.remove('inActive');
 
   })
-/* On clicking the request tab */
+/* On clicking the request-refill icon */
   document.getElementById('request').addEventListener('click', async (e) => {
     e.preventDefault();
   
@@ -274,12 +319,12 @@ onAuthStateChanged(auth, async (user) => {
       document.getElementById('mAdd').value = userData.address || "";
       document.getElementById('cylCount').value = bookingData.CylCount || "0";
 
-          if(Number(bookingData.CylCount) <= 0) {
+          if(Number(bookingData.CylCount) === 0) {
           refill_btn.innerHTML= '';
           const divEle = document.createElement('div');
           divEle.innerHTML = "<h2>You have ran-out of your alloted cylinders.</h2><h3>Go to Requests tab and Request Extra Cylinders</h3>";
           divEle.style.cssText = "display:flex; flex-direction:column; gap: 0.8rem;text-align:center; letter-spacing:1px;";
-          refill_btn.appendChild(divEle);                    
+          refill_btn.appendChild(divEle);                   
           }
     }       
       ['regNum', 'mName', 'mNum', 'mAdd', 'cylCount'].forEach((id) => {
@@ -302,7 +347,7 @@ onAuthStateChanged(auth, async (user) => {
 
                 
       if(!regNum || !mName || !mNum || !mAdd || !cylCount){
-    alert("Please Comple Your Profile in your Profile section!");
+    alert("Please Complete Your Profile in your Profile section!");
     return;
   } 
   const now = new Date();
@@ -323,8 +368,6 @@ onAuthStateChanged(auth, async (user) => {
         })
         
   const bookingSnap = await getDoc(bookingRec);
-
-
   if( bookingSnap.exists()){
       
           const bookingData =  bookingSnap.data()
@@ -333,7 +376,7 @@ onAuthStateChanged(auth, async (user) => {
           await updateDoc(bookingRec,{
                CylCount: updateCylCount
                });
-              
+    
     }
   
     /* Sending Email after confirming Order */
@@ -345,16 +388,36 @@ onAuthStateChanged(auth, async (user) => {
                       order_id:orderId
                        }  
         emailjs.send('service_texmdlm', 'template_roi2uta', msgParams)
-        alert(`'Order Placed Succesfully, email sent, if not check SPAM folder' ${orderId}`);
+        alert(`'Order Placed Succesfully Order Id: ${orderId}, Email sent, check SPAM folder' `);
         document.getElementById('refill').style.display = 'none';        
   })
 
 
   /* Cancel Button */
   document.getElementById('BtnCancel').addEventListener('click', () => {
+   
   document.getElementById('refill').style.display = 'none';
 })
 
+/* mobile menu */
+const mobile_Home = document.getElementById('mobileHome');
+mobile_Home.addEventListener('click', (e) => {
+e.preventDefault();
+
+const mobileNavBox = document.getElementById('mobileNavBox');
+const icon = document.getElementById('icon');
+
+if (mobileNavBox.style.display === 'flex') {
+  mobileNavBox.style.display = 'none';
+  icon.classList.remove( "fa-xmark");
+  icon.classList.add("fa-bars");
+   
+} else {
+  mobileNavBox.style.display = 'flex';
+  icon.classList.add( "fa-xmark");
+  icon.classList.remove("fa-bars");
+}
+})
 
 
 

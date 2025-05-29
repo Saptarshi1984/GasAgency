@@ -62,11 +62,10 @@ body{
 .active{
   background: var(--background-light);
   border-radius: 18px;
-
 }
 .inActive{
   padding: 0.4rem;
-  color: aliceblue;
+  color: rgb(122, 122, 123);
   font-family: var(--navLink-font);
   letter-spacing: 1px;
   border: solid 2px var(--background-light);
@@ -97,7 +96,12 @@ body{
     border-bottom: solid 1px var(--brand-color);
   }
 }
-
+#pName{ 
+  color: var(--background-light);
+  padding: 6px;
+  border: solid 1px var(--background-light);
+  border-radius: 10px;
+}
 #navContainer{
   background: var(--background-dark);
   border-bottom: solid 1px rgb(65, 44, 44);
@@ -109,6 +113,12 @@ body{
   justify-content: space-between;
   align-items: center;
   margin:auto  
+}
+#mobileNavBox{
+  display: none;
+}
+#mobileHome{
+  display: none;
 }
 #heroContainer, #dashContainer{
   height: 100vh;
@@ -123,10 +133,23 @@ body{
 }
 #heroText {
   @include flex-col;
+  gap: 1rem;
+  font-family: var(--brand-font);
+  letter-spacing: 1px;
   color: aliceblue;
   justify-content: center;
   align-items: center;
+
+  h1{ 
+    font-family: var(--brand-font);
+    animation: upword 5s linear ;
+  }
+
+  p{
+    animation: toRight 5s linear ;
+  }
 }
+
 #signInForm, #signUpForm, #adminLogin{
   @include flex-col;
   padding: 2rem 0;
@@ -167,9 +190,7 @@ body{
       justify-content: center;
       gap: 1rem;
   }
-  button:hover{
-      background: var();        
-  }
+ 
   hr {
       opacity: 20%;
       width: 80%;
@@ -196,7 +217,6 @@ body{
   width: 80%;
   gap: 1.4rem;
   padding: 0.4rem;
-  border-bottom: solid 1px rgb(136, 136, 136);
   color: aliceblue;
 
   img{
@@ -246,16 +266,16 @@ body{
   }
 }
 #dash{
-  width: 85%;
-  
+  width: 85%;  
 }
-#dashboardSec {
+#dashboardSec, #adminDashboardSec, #adminActionsSec, #adminRequestSec {
   @include flex-col;
   gap: 4rem;
   width: 80%;
   height: auto;
   margin:4rem auto;
 }
+
 #adminReq {
   @include flex-col;
   gap: 1rem;
@@ -350,20 +370,23 @@ body{
   margin: 20px auto;
   align-items: center;
 }
+.payNow{
+  width: auto;
+}
 #requestSec { 
    @include flex-col;
    gap: 1rem;
+   width: 90%;
   p{
-  margin-top: 1rem;
+  margin-top: 2rem;
   padding: 0.4rem;
-  width: 50%;
   color: aliceblue;
   font-size: 1.6rem;
   text-align: justify;
   hyphens: auto;
   border: solid 2px rgb(158, 158, 159);
   }
-  
+
   label{
     color: aliceblue;
     font-size: 1.4rem;
@@ -375,8 +398,12 @@ body{
       width: 14%;
       cursor: pointer;
     }
-
 }
+  #declaration{
+    width: 90%;
+    font-size: 1.4rem;
+    color: aliceblue;
+  }
 #container {
   @include flex-row;
   gap: 1rem;
@@ -413,7 +440,249 @@ td{
     }
   }
 }
+.btnChoice {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+}
+.approve, .decline {
+  cursor: pointer;
+  font-size: 1.4rem;
+
+  &:hover {
+    color: var(--background-dark);
+    background: var(--background-light);
+  }
+}
 #adminServices{
   @include flex-row;
   justify-content: space-around;
+}
+
+/* Animations */
+@keyframes upword {
+  0%{
+    transform:translateY(20px);
+  }
+    50%{
+    transform:translateY(0px);
+  }
+}
+@keyframes toRight {
+  0%{
+    transform:translateX(-20px);
+  }
+    50%{
+    transform:translateY(0px);
+  }
+}
+
+@media screen and (width < 992px) {
+
+  body{
+  overflow-y: unset;  
+  overflow: scroll;
+  
+}
+  
+  #navContainer{
+    width: 100%;
+    @include flex-col;
+    justify-content: center;
+  }
+  #navBar {
+  @include flex-col;
+  justify-content: center;
+  align-items: start;
+  height: 40px; 
+
+}
+  #navBox{
+   display: none;
+  }
+  #mobileNavBox{
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    text-align: center;  
+    a{      
+      width: 100%;      
+    }
+  }
+  #mobile_pName{ 
+    color: var(--background-light);
+  }
+  #mobileBar{
+    width: 100%;
+    @include flex-row;
+    justify-content: space-between;
+    align-items: center;
+    a{
+      color: var(--brand-color);
+    }
+  }
+  #mobileHome{
+  display: block;
+  font-size: 1.4rem;
+}
+  #heroPage {
+    @include flex-col;
+    justify-content: center; 
+    position: relative;   
+  }
+  #heroText { 
+    
+    h1{
+    position: absolute;
+    font-size: 0.8rem;
+    bottom: 40px;   
+    }
+    p{
+      position: absolute;
+      font-size: 0.6rem;
+      bottom: 10px;
+    }
+  }
+  #signInForm, #signUpForm, #adminLogin {
+    width: 90%;
+    height: auto;    
+  }
+
+#dashContainer{
+  margin: auto;
+  @include flex-col; 
+  align-items: center;
+  min-height: 100%;
+  
+}
+#dashboardSec, #profileSec{
+  width: 100%;
+  min-height: auto;
+  justify-content: center;
+  align-items: center;
+}
+#profileSec{
+  width: 90%;
+  margin:1rem auto;
+  height: auto;
+
+  form{
+    width: 80%;
+  }
+}
+#formBtn{
+  width: 100%;
+}
+#request{
+  margin: auto;
+}
+#dash {
+  width: 100%; 
+  height:auto; 
+
+  background: var(--background-light);  
+}
+#refill {
+  justify-content: center;
+  background: var(--background-light);
+  width: 100%;
+  min-height: auto;
+  form{
+    width: 90%;
+    justify-content: center;
+    margin: auto;
+    label {
+      margin:auto;
+      font-family: var(--title-font);
+      font-size: 1.2rem;
+      color: aliceblue;
+    }
+    input{
+      text-align: center;
+      margin: auto;
+      width: 90%;
+      height: 28px;
+      padding: 0;
+    }
+  }
+}
+#refillOrder{
+  width: 100%;  
+}
+#refillBtn{
+  flex-direction: column;
+  margin: auto;
+  width: inherit;
+ 
+
+  button {
+    width: 50%;
+  }
+}
+#left-panel{
+  @include flex-col;
+  gap: 1rem;
+  width: 100%;
+}
+#dashLinkWrap{
+  position: fixed;
+  @include flex-row;
+  width: 100%;
+  height: 2.4rem;
+  padding: 0;
+  gap: 10px;
+  text-align: center;
+  bottom: 0px;
+  background: var(--background-dark);
+  border-top-left-radius: 20px;
+  border-top-right-radius: 20px;
+  
+  a{
+    width: 80%;
+    color: aliceblue;
+    font-size: 10px;
+    padding: 10px;
+    font-family: var(--navLink-font);
+    letter-spacing: 1px;
+    border-radius: 20px;
+    border-top: solid 1px var(--background-dark);
+    height: 100%;
+  }
+}
+#profileSec{
+  width: 100%;
+  height: auto;
+}
+#requestSec{
+
+  button{
+    width: 80%;
+  }
+}
+#declaration{
+  width: 90%;
+  padding: 8px;
+  text-align: justify;
+  hyphens: auto;
+
+  p{font-size: 1.4rem;}
+  
+  }
+
+  #adminServices{
+    @include flex-col;
+    align-items: center;
+    gap: 1rem;
+  }
+  #adminRequestSec{
+
+    h1{
+      font-size: 1.8rem;
+      text-align: center;
+    }
+  }
+  #tableSec{
+    overflow: scroll;
+  }
 }

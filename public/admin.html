@@ -10,7 +10,7 @@
     <nav id="navBar">
         <a class="logo" href="#">G.A.S</a>
         <div id="navBox">
-            <a class="navLink" href="#">Services</a>
+            <!-- <a class="navLink" href="#">Services</a> -->
             <a class="navLink" href="#">About Us</a>
             <a class="navLink" href="#">Contact Us</a>
             <a id="adminName" class="navLink" ></a>
@@ -22,23 +22,24 @@
      <div id="dashContainer">
 
     <div id="left-panel">
-     <div id="user-info">
+<!--      <div id="user-info">
         <img src="" alt="profile-img" >
         <button type="button">Upload</button>
         <h4 id="admin-name">Name:</h4>
         <h4 id="admin-email">Email:</h4>
-    </div>
+    </div> -->
     <div id="dashLinkWrap">
-        <a id="dashboardTab" href="" class="dashLink active">Dashboard</a>
+        <a id="adminDashboardTab" href="" class="dashLink active">Dashboard</a>
+        <a id="requestTab" href="" class="dashLink">Requests</a>
         <a id="actionsTab" href="" class="dashLink">Actions</a>
-        <a id="bookingsTab" href="" class="dashLink">Requests</a>
         
     </div>
     </div>
 
     <div id="dash">
 
-        <div id="dashboardSec">
+        <div id="adminDashboardSec">
+
             <h1>Admin Dashboard</h1> 
               <div id="adminServices">
                 <div id="adminReq">
@@ -61,13 +62,39 @@
                     <h3>Total Revenue</h3>
                   </a>
                 </div>
+            </div>  
+                <hr>               
+        </div>
+
+        <div id="adminActionsSec" style="display: none;">
+          <h1>Actions</h1>
+          <h2 style="text-align: center;">Currently, there is nothing to show.</h2>
+        </div>
+
+        <div id="adminRequestSec" style="display: none;">
+          <h1>Requests for Additional Cylinders</h1>
+              <div id="tableSec">
+                  <table id="requestsTable">
+                          <thead>
+                            <tr>
+                              <th>#</th>
+                              <th>Date</th>
+                              <th>Request ID</th>
+                              <th>Name</th>
+                              <th>User ID</th>
+                              <th>Status</th>
+                              <th>Actions</th>
+                            </tr>
+                          </thead>
+                   <tbody id="requestsBody">
+                          <!-- Rows will be inserted here -->
+                  </tbody>
+                  </table>
             </div>
-                <hr>
-
-                 
-
         </div>
-        </div>
+
+       
 <script type="module" src=".\src\admin.js"></script>
+<script src="https://kit.fontawesome.com/eac29af5b4.js" crossorigin="anonymous"></script>
 </body>
 </html>

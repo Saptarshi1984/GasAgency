@@ -1,7 +1,7 @@
 import './style.scss';
 import {auth} from './firebase.js';
 import {doc, setDoc, getFirestore, getDoc, getDocs, collection} from "firebase/firestore";
-import {signInWithEmailAndPassword, createUserWithEmailAndPassword} from "firebase/auth";
+import {signInWithEmailAndPassword, createUserWithEmailAndPassword, signInWithRedirect} from "firebase/auth";
 import { getAuth, signInWithPopup, GoogleAuthProvider } from 'firebase/auth';
 
 const db = getFirestore();

@@ -1,137 +1,194 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Gas Agency System</title>
-</head>
-<body>
-    
+  </head>
+  <body>
     <div id="navContainer">
-    <nav id="navBar">
-        <a class="logo" href="#">G.A.S</a>
-        <div id="navBox">
-            <a class="navLink" href="#">Services</a>
-            <a class="navLink" href="#">About Us</a>
-            <a class="navLink" href="#">Contact Us</a>
-            <a id="pName" class="navLink" href="#"></a>
-            <a id="logout" class="navLink" href="#">Logout</a>
-        </div>        
-    </nav>
-    </div>
-   <div id="dashContainer">
-
-    <div id="left-panel">
-     <div id="user-info">
-        <img src="" alt="profile-img" >
-        <input id="profilePic" type="file">
-        <button id="uploadPic" type="button">Upload</button>
-        <h4 id="user-name">Name:</h4>
-        <h4 id="user-email">Email:</h4>
-    </div>
-    <div id="dashLinkWrap">
-        <a id="dashboardTab" href="" class="dashLink active">Dashboard</a>
-        <a id="profileTab" href="" class="dashLink">Profile</a>
-        <a id="bookingsTab" href="" class="dashLink">Bookings</a>
-        <a id="requestTab" href="" class="dashLink">Requests</a>
+      <nav id="navBar">
         
-    </div>
-    </div>
+        <div id="mobileBar">
+        <a class="logo" href="#">G.A.S</a>
+        <a id="mobileHome" href=""><i id="icon" class="fa-solid fa-bars"></i></a>
+        </div>
 
-    <div id="dash">
+        <div id="navBox">          
+          <a class="navLink" href="#">About Us</a>
+          <a class="navLink" href="#">Contact Us</a>          
+          <a id="pName"></a>
+          <a id="logout" class="navLink" href="#">Logout</a>
+        </div>
+      </nav>
 
+      <div id="mobileNavBox">          
+          <a class="navLink" href="#">About Us</a>
+          <a class="navLink" href="#">Contact Us</a>          
+          <a id="mobile_pName"></a>
+          <a id="mobileLogout" class="navLink" href="#">Logout</a>
+        </div>      
+
+    </div>
+    <div id="dashContainer">
+      <div id="left-panel">
+        <!-- <div id="user-info">
+          <img src="" alt="profile-img" />
+          <input id="profilePic" type="file" />
+          <button id="uploadPic" type="button">Upload</button>
+          <h4 id="user-name">Name:</h4>
+          <h4 id="user-email">Email:</h4>
+        </div> -->
+        
+        <div id="dashLinkWrap">
+          <a id="dashboardTab" href="" class="dashLink active">Dashboard</a>
+          <a id="profileTab" href="" class="dashLink">Profile</a>
+          <a id="bookingsTab" href="" class="dashLink">Bookings</a>
+          <a id="requestTab" href="" class="dashLink">Requests</a>
+        </div>
+      </div>
+
+      <div id="dash">
         <div id="dashboardSec">
-            <h1>Your Dashboard</h1>            
-               <div id="request">
-                  <a href="">
-                    <img src="https://res.cloudinary.com/dytxyfzyd/image/upload/v1746626948/ChatGPT_Image_May_7_2025_07_34_53_PM_vsfcxy.png" alt="">
-                    <h3>Request Refill</h3>
-                  </a>
-                </div>
-                <hr>
-                <div id="refill" style="display: none;">
-                    
-                    <form id="refillOrder" action="">
-                        
-                        <label for="regNum">Registration Number(UID):</label>
-                        <input id="regNum" type="text">
-                        <label for="">Mobile Number:</label>
-                        <input id="mNum" type="number" required>                                          
-                        <label for="">Name:</label>
-                        <input id="mName" type="text" required>
-                        <label for="">Address:</label>
-                        <input id="mAdd" type="text" required>
-                        <label for="cylCount">Cylinder Available</label>
-                        <input id="cylCount" type="number">
-                        <div id="refillBtn">
-                        <button class="btnPrimary" type="submit">Confirm Order</button>
-                        <button id="BtnCancel" class="btnPrimary" type="button">Cancel</button>
-                        </div>
-
-                    </form>
-                </div>
-        </div>
-
-        <div id="profileSec" style="display: none;">
-            <h1>Your Profile</h1>
-            <form action="submit">
-                <Label>Name:</Label>
-                <input id="inputName" type="text" placeholder="Name" disabled>
-                <Label>Email:</Label>
-                <input id="inputEmail" type="text" placeholder="Email" disabled>
-                <Label>Aadhar No:</Label>
-                <input id="inputAadhar" type="text" placeholder="Your Aadhar Number" disabled>
-                <Label>Mobile:</Label>
-                <input id="inputMobile" type="number" placeholder="Enter Aadhar Linked Mobile Number." disabled>
-                <Label>Address:</Label>
-                <input id="inputAddress" type="text" placeholder="Your complete Postal Address." disabled>
-                <div id="formBtn">
-                    <button id="modifyBtn" class="btnPrimary"  type="button">Modify</button>    
-                    <button id="saveBtn" class="inActive"  type="submit" disabled>Save</button>                
-                </div>
+          <h1>Your Dashboard</h1>
+          <div id="request">
+            <a href="">
+              <img
+                src="https://res.cloudinary.com/dytxyfzyd/image/upload/v1746626948/ChatGPT_Image_May_7_2025_07_34_53_PM_vsfcxy.png"
+                alt=""
+              />
+              <h3>Request Refill</h3>
+            </a>
+          </div>
+          <hr />
+          <div id="refill" style="display: none">
+            <form id="refillOrder" action="">
+              <label for="regNum">Registration Number(UID):</label>
+              <input id="regNum" type="text" />
+              <label for="">Mobile Number:</label>
+              <input id="mNum" type="number" required />
+              <label for="">Name:</label>
+              <input id="mName" type="text" required />
+              <label for="">Address:</label>
+              <input id="mAdd" type="text" required />
+              <label for="cylCount">Cylinder Available</label>
+              <input id="cylCount" type="number" />
+              <div id="refillBtn">
+                <button class="btnPrimary" type="submit">Confirm Order</button>
+                <button id="BtnCancel" class="btnPrimary" type="button">
+                  Cancel
+                </button>
+              </div>
             </form>
+          </div>
         </div>
 
-        <div id="bookingSec" style="display: none;">
-            <h1>Your Bookings</h1>
-            <div id="container">
-            <table id="bookingTable">
-                <thead>
-                  <tr>
-                    <th>Date</th>
-                    <th>OrderId</th>
-                    <th>Amount</th>
-                    <th>Status</th>
-                    <th>Pay Now</th>
-                  </tr>
-                </thead>
-                <tbody id="bookingLists">
-                 
-                </tbody>
-              </table>
+        <div id="profileSec" style="display: none">
+          <h1>Your Profile</h1>
+          <form action="submit">
+            <label>Name:</label>
+            <input id="inputName" type="text" placeholder="Name" disabled />
+            <label>Email:</label>
+            <input id="inputEmail" type="text" placeholder="Email" disabled />
+            <label>Aadhar No:</label>
+            <input
+              id="inputAadhar"
+              type="text"
+              placeholder="Your Aadhar Number"
+              disabled
+            />
+            <label>Mobile:</label>
+            <input
+              id="inputMobile"
+              type="number"
+              placeholder="Enter Aadhar Linked Mobile Number."
+              disabled
+            />
+            <label>Address:</label>
+            <input
+              id="inputAddress"
+              type="text"
+              placeholder="Your complete Postal Address."
+              disabled
+            />
+            <div id="formBtn">
+              <button id="modifyBtn" class="btnPrimary" type="button">
+                Modify
+              </button>
+              <button id="saveBtn" class="inActive" type="submit" disabled>
+                Save
+              </button>
             </div>
-        </div>
-       
-        <div id="requestSec" style="display: none;">
-            <h1>Requests</h1>
-            <h3 id="confirmMsg" style="display: none;"></h3>
-            <p id="declaration"> Lorem ipsum dolor sit amet consectetur 
-                adipisicing elit. Rem maiores aperiam 
-                cumque magnam dicta, amet nemo? A, aliquid. 
-                Labore ad, minus quo nesciunt minima earum 
-                sunt quis molestias soluta tempora!</p>
-                <label id="checkBox"><input id="addCylCheckBox" type="checkbox">Yes, I Agree</label>
-
-                <button id="addCylinder" class="btnPrimary" type="button" style="display: none;">Confirm Additional Cylinder</button>
+          </form>
         </div>
 
+        <div id="bookingSec" style="display: none">
+          <h1>Your Bookings</h1>
+          <div id="container">
+            <table id="bookingTable">
+              <thead>
+                <tr>
+                  <th>Date</th>
+                  <th>OrderId</th>
+                  <th>Amount</th>
+                  <th>Status</th>
+                  <th>Pay Now</th>
+                </tr>
+              </thead>
+              <tbody id="bookingLists"></tbody>
+            </table>
+          </div>
+        </div>
 
+        <div id="requestSec" style="display: none">
+          <h1>Requests</h1>
+          <h3 id="confirmMsg" style="display: none"></h3>
+
+          <div id="declaration">
+            <p><strong>Declaration: </strong>
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Rem maiores
+            aperiam cumque magnam dicta, amet nemo? A, aliquid. Labore ad, minus
+            quo nesciunt minima earum sunt quis molestias soluta tempora!</p>
+          </div>
+          <label id="checkBox"
+            ><input id="addCylCheckBox" type="checkbox" />Yes, I Agree</label
+          >
+
+          <button
+            id="addCylinder"
+            class="btnPrimary inActive"
+            type="button"
+            
+          >
+            Confirm Additional Cylinder
+          </button>
+
+          <h2>Your previous Requests</h2>
+          <div id="container">
+            <table id="userRequestsHistory">
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>Date</th>
+                  <th>OrderId</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody id="histroricalRequest"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
     </div>
 
-   </div>
- 
-<script type="module" src=".\src\dashboard.js"></script>
-<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
-<script src="https://kit.fontawesome.com/eac29af5b4.js" crossorigin="anonymous"></script>
-</body>
+    <script type="module" src="./src/dashboard.js"></script>
+    <script
+      type="text/javascript"
+      src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"
+    ></script>
+    <script
+      src="https://kit.fontawesome.com/eac29af5b4.js"
+      crossorigin="anonymous"
+    ></script>
+  </body>
 </html>
